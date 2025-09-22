@@ -1,0 +1,28 @@
+services:
+  api:
+    container_name: CVlization_API
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: CVlization/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__Default=Server=db;Database=CVdb;User Id=sa;Password=silksong
+
+  db:
+    container_name: CVlization_DB
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=silksong
+    ports:
+      - "1433:1433"
+    volumes:
+      - dbdata:/var/opt/mssql
+
+volumes:
+  dbdata:
