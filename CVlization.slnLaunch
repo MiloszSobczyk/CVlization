@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "All",
+    "Projects": [
+      {
+        "Path": "docker-compose.dcproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Web\\Web.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

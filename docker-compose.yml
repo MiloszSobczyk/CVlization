@@ -1,3 +1,5 @@
+name: CVlization
+
 services:
   api:
     container_name: CVlization_API
@@ -11,14 +13,14 @@ services:
     depends_on:
       - db
     environment:
-      - ConnectionStrings__Default=Server=db;Database=CVdb;User Id=sa;Password=silksong
+      - ConnectionStrings__Default=Server=db;Database=CVdb;User Id=sa;Password=Silksong1234!
 
   db:
     container_name: CVlization_DB
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/mssql/server:2025-latest
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=silksong
+      - SA_PASSWORD=Silksong1234!
     ports:
       - "1433:1433"
     volumes:
