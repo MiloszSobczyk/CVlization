@@ -12,14 +12,15 @@ services:
       - CV_DB
 
   CV_DB:
-    image: mcr.microsoft.com/mssql/server:2025-latest
+    image: ${DOCKER_REGISTRY-}cv_db
     container_name: CV_DB
-    restart: always
     environment:
-      - ACCEPT_EULA=Y
       - SA_PASSWORD=Strong!Passw0rd
     ports:
       - "1433:1433"
+    build:
+      context: .
+      dockerfile: Dockerfile.DB
     volumes:
       - db_data:/var/opt/mssql
 

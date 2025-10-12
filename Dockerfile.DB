@@ -1,0 +1,23 @@
+# dockerfile.database
+FROM mcr.microsoft.com/mssql/server:2025-latest
+
+ENV ACCEPT_EULA=Y
+ENV MSSQL_PID=Developer
+
+USER root
+RUN apt-get update && apt-get install -y wget unzip libunwind8 libicu70 && \
+    wget -O sqlpackage.zip https://aka.ms/sqlpackage-linux && \
+    mkdir -p /opt/sqlpackage && \
+    unzip -o sqlpackage.zip -d /opt/sqlpackage && \
+    chmod a+x /opt/sqlpackage/sqlpackage && \
+    rm sqlpackage.zip
+
+# Make sure sqlpackage is in PATH
+ENV PATH="$PATH:/opt/sqlpackage"
+
+# Copy your DACPAC into the container
+COPY ./Database/Database.dacpac /var/opt/Database.dacpac
+COPY ./scripts/deploy_dacpac.sh /var/opt/deploy_dacpac.sh
+RUN chmod +x /var/opt/deploy_dacpac.sh
+
+ENTRYPOINT ["/var/opt/deploy_dacpac.sh"]
