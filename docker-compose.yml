@@ -1,26 +1,30 @@
 services:
   CV_Server:
-    image: ${DOCKER_REGISTRY-}api
+    image: "${DOCKER_REGISTRY}api"
     container_name: CV_Server
     build:
       context: .
       dockerfile: API/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "${API_PORT}:${API_PORT}"
+      - "${API_ALT_PORT}:${API_ALT_PORT}"
     depends_on:
       - CV_DB
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
 
   CV_DB:
-    image: ${DOCKER_REGISTRY-}cv_db
+    image: "${DOCKER_REGISTRY}cv_db"
     container_name: CV_DB
     environment:
-      - SA_PASSWORD=Strong!Passw0rd
+      - SA_PASSWORD=${DB_PASSWORD}
     ports:
-      - "1433:1433"
+      - "${DB_PORT}:${DB_PORT}"
     build:
       context: .
       dockerfile: Dockerfile.DB
+    env_file:
+      - ./.env
     volumes:
       - db_data:/var/opt/mssql
 
